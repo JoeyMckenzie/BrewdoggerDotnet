@@ -33,7 +33,7 @@ namespace Brewdogger.Api.Repositories
             var beer = _context.Beers.Find(id);
             
             if (beer == null)
-                throw new BeerNotFound("Could not find beer with id [" + id + "]");
+                throw new BeerNotFoundException("Could not find beer with id [" + id + "]");
 
             Log.Information("BeerRepository::GetBeerById - Beer with id [{0}] retrieved successfully.", beer.BeerId);
             return beer;

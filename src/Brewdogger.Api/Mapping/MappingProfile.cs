@@ -29,8 +29,6 @@ namespace Brewdogger.Api.Mapping
                 .ForMember(bd => bd.BreweryName, m => m.MapFrom(b => b.BreweryName))
                 .ForMember(bd => bd.City, m => m.MapFrom(b => b.City))
                 .ForMember(bd => bd.State, m => m.MapFrom(b => b.State));
-
-            CreateMap<Beer, Beer>();
         }
     }
 }

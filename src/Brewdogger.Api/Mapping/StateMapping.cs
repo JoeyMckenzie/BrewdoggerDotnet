@@ -4,7 +4,7 @@ namespace Brewdogger.Api.Mapping
 {
     public static class StateMapping
     {
-        public static readonly Dictionary<string, string> StateMap = new Dictionary<string, string>()
+        public static readonly Dictionary<string, string> StateMap = new Dictionary<string, string>
         {
             {"AL", "Alabama"},
             {"AK", "Alaska"},

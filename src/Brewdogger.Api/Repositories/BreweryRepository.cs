@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using Brewdogger.Api.Entities;
 using Brewdogger.Api.Exceptions;
+using Brewdogger.Api.Models;
 using Brewdogger.Api.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
@@ -33,6 +35,19 @@ namespace Brewdogger.Api.Repositories
                 .ToList();
 
             return breweries;
+        }
+
+        public void SaveBrewery(Brewery brewery)
+        {
+            // Validate brewery does not exist before adding
+            var existingBreweries = _context.Breweries
+                .FirstOrDefault(b => string.Equals(b.BreweryName, brewery.BreweryName, StringComparison.CurrentCultureIgnoreCase));
+            
+            if (existingBreweries != null)
+                throw new BrewdoggerException("Brewery [" + brewery.BreweryName + "] already exists");
+            
+            _context.Breweries.Add(brewery);
+            _context.SaveChanges();
         }
     }
 }

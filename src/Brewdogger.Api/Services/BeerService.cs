@@ -28,7 +28,7 @@ namespace Brewdogger.Api.Services
             if (!beers.Any())
             {
                 Log.Warning("BeerRepository::GetAllBeers - No beers found");
-                throw new BeerNotFound("No beers found");
+                throw new BeerNotFoundException("No beers found");
             }
 
             return beers;

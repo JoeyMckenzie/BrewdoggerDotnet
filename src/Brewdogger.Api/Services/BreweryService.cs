@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using Brewdogger.Api.Entities;
 using Brewdogger.Api.Repositories;
 using System.Linq;
+using AutoMapper;
 using Brewdogger.Api.Exceptions;
 using Brewdogger.Api.Mapping;
+using Brewdogger.Api.Models;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Serilog;
 
 namespace Brewdogger.Api.Services
@@ -12,10 +15,12 @@ namespace Brewdogger.Api.Services
     public class BreweryService : IBreweryService
     {
         private readonly IBreweryRepository _breweryRepository;
+        private readonly IMapper _mapper;
 
-        public BreweryService(IBreweryRepository breweryRepository)
+        public BreweryService(IBreweryRepository breweryRepository, IMapper mapper)
         {
             _breweryRepository = breweryRepository;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -23,7 +28,7 @@ namespace Brewdogger.Api.Services
         /// </summary>
         /// <param name="id">Entity ID</param>
         /// <returns>Brewery entity</returns>
-        /// <exception cref="BreweryNotFound">Throws if no breweries found</exception>
+        /// <exception cref="BreweryNotFoundException">Throws if no breweries found</exception>
         public Brewery GetBrewery(int id)
         {
             var brewery = _breweryRepository.GetBreweryById(id);
@@ -31,7 +36,7 @@ namespace Brewdogger.Api.Services
             if (brewery == null)
             {
                 Log.Information("BreweryService::GetBreweryById - No brewery found with id [{0}]", id);
-                throw new BreweryNotFound("No brewery found");
+                throw new BreweryNotFoundException("No brewery found");
             }
 
             try
@@ -52,7 +57,7 @@ namespace Brewdogger.Api.Services
         /// Retrieve a list of all brewery entities in the database
         /// </summary>
         /// <returns></returns>
-        /// <exception cref="BreweryNotFound"></exception>
+        /// <exception cref="BreweryNotFoundException"></exception>
         public ICollection<Brewery> GetBreweries()
         {
             var breweries = _breweryRepository.GetAllBreweries();
@@ -60,10 +65,23 @@ namespace Brewdogger.Api.Services
             if (!breweries.Any())
             {
                 Log.Information("BreweryService::GetAllBreweries - No breweries found");
-                throw new BreweryNotFound("No breweries found");
+                throw new BreweryNotFoundException("No breweries found");
             }
 
             return breweries;
+        }
+
+        /// <summary>
+        /// Create a brewery from a brewery DTO
+        /// </summary>
+        /// <param name="breweryDto">Brewery data transfer object</param>
+        public void CreateBrewery(BreweryDto breweryDto)
+        {
+            // Map breweryDto to brewery object
+            var newBrewery = _mapper.Map<BreweryDto, Brewery>(breweryDto);
+            _breweryRepository.SaveBrewery(newBrewery);
+            
+            Log.Information("BreweryService::CreateBrewery - Brewery [{0}] saved successfully", newBrewery.BreweryName);
         }
 
         /// <summary>
