@@ -21,14 +21,19 @@ namespace Brewdogger.Api.Repositories
             _context = context;
         }
 
-        public Brewery GetBreweryById(int id)
+        public Brewery FindBreweryById(int id)
         {
             var brewery = _context.Breweries.Find(id);
-
             return brewery;
         }
 
-        public ICollection<Brewery> GetAllBreweries()
+        public Brewery FindBreweryByBreweryName(string breweryName)
+        {
+            var brewery = _context.Breweries.FirstOrDefault(b => b.BreweryName == breweryName);
+            return brewery;
+        }
+
+        public ICollection<Brewery> FindAllBreweries()
         {
             var breweries = _context.Breweries
                 .Include(br => br.Beers)
@@ -39,14 +44,19 @@ namespace Brewdogger.Api.Repositories
 
         public void SaveBrewery(Brewery brewery)
         {
-            // Validate brewery does not exist before adding
-            var existingBreweries = _context.Breweries
-                .FirstOrDefault(b => string.Equals(b.BreweryName, brewery.BreweryName, StringComparison.CurrentCultureIgnoreCase));
-            
-            if (existingBreweries != null)
-                throw new BrewdoggerException("Brewery [" + brewery.BreweryName + "] already exists");
-            
             _context.Breweries.Add(brewery);
+            _context.SaveChanges();
+        }
+
+        public void UpdateBrewery(Brewery originalBrewery, Brewery updatedBrewery)
+        {
+            _context.Entry(originalBrewery).CurrentValues.SetValues(updatedBrewery);
+            _context.SaveChanges();
+        }
+
+        public void DeleteBreweryById(Brewery brewery)
+        {
+            _context.Breweries.Remove(brewery);
             _context.SaveChanges();
         }
     }

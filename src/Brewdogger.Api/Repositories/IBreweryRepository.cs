@@ -6,8 +6,11 @@ namespace Brewdogger.Api.Repositories
 {
     public interface IBreweryRepository
     {
-        Brewery GetBreweryById(int id);
-        ICollection<Brewery> GetAllBreweries();
+        Brewery FindBreweryById(int id);
+        Brewery FindBreweryByBreweryName(string breweryName);
+        ICollection<Brewery> FindAllBreweries();
         void SaveBrewery(Brewery brewery);
+        void UpdateBrewery(Brewery brewery, Brewery updatedBrewery);
+        void DeleteBreweryById(Brewery brewery);
     }
 }

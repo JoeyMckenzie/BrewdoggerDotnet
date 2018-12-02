@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using AutoMapper;
 using Brewdogger.Api.Entities;
+using Brewdogger.Api.Helpers;
 using Brewdogger.Api.Models;
 using Brewdogger.Api.Repositories;
 using Brewdogger.Api.Services;
@@ -22,6 +23,9 @@ namespace Brewdogger.Tests.Services
         private Brewery _brewery3;
         private ICollection<Brewery> _breweries;
         private BreweryDto _breweryDto;
+        private BreweryDto _breweryToUpdate;
+        private Brewery _updatedBrewery;
+        private Mock<BreweryValidator> _breweryValidator;
 
         [SetUp]
         public void SetUp()
@@ -57,20 +61,50 @@ namespace Brewdogger.Tests.Services
                 State = "CO"
             };
 
+            _breweryToUpdate = new BreweryDto
+            {
+                BreweryName = "Sierra Nevada Brewing Company",
+                City = "Mills River",
+                State = "NC"
+            };
+
+            _updatedBrewery = new Brewery
+            {
+                BreweryId = 2,
+                BreweryName = "Sierra Nevada Brewing Company",
+                City = "Mills River",
+                State = "NC"
+            };
+
             _breweries = new Collection<Brewery> {_brewery1, _brewery2};
             
             // Mock repository
             _breweryRepository = new Mock<IBreweryRepository>();
-            _breweryRepository.Setup(b => b.GetBreweryById(1)).Returns(_brewery1);
-            _breweryRepository.Setup(b => b.GetBreweryById(2)).Returns(_brewery2);
-            _breweryRepository.Setup(b => b.GetAllBreweries()).Returns(_breweries);
-            _breweryRepository.Setup(b => b.SaveBrewery(_brewery3)).Callback(() => _breweries.Add(_brewery3));
+            
+            // Mock reads
+            _breweryRepository.Setup(b => b.FindBreweryById(1)).Returns(_brewery1);
+            _breweryRepository.Setup(b => b.FindBreweryById(2)).Returns(_brewery2);
+            _breweryRepository.Setup(b => b.FindAllBreweries()).Returns(_breweries);
+            
+            // Mock creates
+            _breweryRepository.Setup(b => b.SaveBrewery(It.IsAny<Brewery>())).Callback(() => _breweries.Add(_brewery2));
+            _breweryRepository.Verify(b => b.SaveBrewery(It.IsAny<Brewery>()), Times.Once);
+            
+            // Mock deletes
+            _breweryRepository.Setup(b => b.DeleteBreweryById(It.IsAny<Brewery>())).Callback(() => _breweries.Remove(_brewery2));
+            
+            // Mock updates
+//            _breweryRepository.Setup(b => b.UpdateBrewery(_updatedBrewery))
+//                .Callback(() => _brewery2 = _updatedBrewery);
             
             // Mock mapper
             _mapper = new Mock<IMapper>();
             _mapper.Setup(m => m.Map<BreweryDto, Brewery>(_breweryDto)).Returns(_brewery3);
             
-            _breweryService = new BreweryService(_breweryRepository.Object, _mapper.Object);
+            // Mock validator
+            _breweryValidator = new Mock<BreweryValidator>();
+            
+//            _breweryService = new BreweryService(_breweryRepository.Object, _mapper.Object, _breweryValidator.Object);
         }
 
         [Test]
@@ -109,6 +143,30 @@ namespace Brewdogger.Tests.Services
             // Assert
             Assert.That(_breweries.Count, Is.EqualTo(3));
             Assert.That(_breweries.Contains(_brewery3));
+        }
+
+        [Test]
+        public void UpdateBrewery_WhenPassedValidUpdatedBrewery_UpdatesExistingEntityInDatabase()
+        {
+            // Arrange
+            var originalBeer = _brewery2;
+
+            // Act
+            _breweryService.UpdateBrewery(2, _breweryToUpdate);
+
+            // Assert
+            
+        }
+
+        [Test]
+        public void DeleteBrewery_WhenExistingId_DeletesBreweryEntityFromDatabase()
+        {
+            // Act
+            _breweryService.DeleteBrewery(2);
+            
+            // Assert
+            Assert.That(_breweries.Count, Is.EqualTo(1));
+            Assert.That(_breweries.Contains(_brewery2), Is.False);
         }
     }
 }

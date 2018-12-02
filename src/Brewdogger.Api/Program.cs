@@ -20,12 +20,11 @@ namespace Brewdogger.Api
             
             try
             {
-                Log.Information("Starting web host...");
                 CreateWebHostBuilder(args).Build().Run();
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                Log.Fatal(ex, "Host terminated unexpectedly. Reason: " + ex.Message);
+                Log.Fatal(e, "Host terminated unexpectedly. Reason: " + e.Message);
             }
             finally
             {

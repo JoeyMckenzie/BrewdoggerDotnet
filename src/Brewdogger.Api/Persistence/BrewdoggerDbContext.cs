@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Brewdogger.Api.Persistence
 {
-    public class BrewdoggerDbContext : DbContext
+    public sealed class BrewdoggerDbContext : DbContext
     {
         public DbSet<Beer> Beers { get; set; }
         public DbSet<Brewery> Breweries { get; set; }
@@ -14,6 +14,7 @@ namespace Brewdogger.Api.Persistence
         public BrewdoggerDbContext(DbContextOptions options)
             : base(options)
         {
+            Database.EnsureCreated();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -76,11 +77,6 @@ namespace Brewdogger.Api.Persistence
                 .HasOne(b => b.Brewery)
                 .WithMany(b => b.Beers)
                 .HasForeignKey(fk => fk.BreweryId);
-
-            // Create index for BeerStyle
-            modelBuilder
-                .Entity<Beer>()
-                .HasIndex(b => b.BeerStyle);
 
             // Configure one-to-many relationship for Breweries table
             modelBuilder

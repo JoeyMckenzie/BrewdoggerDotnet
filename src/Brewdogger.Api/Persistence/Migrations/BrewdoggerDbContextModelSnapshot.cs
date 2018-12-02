@@ -36,17 +36,9 @@ namespace Brewdogger.Api.Persistence.Migrations
 
                     b.HasKey("BeerId");
 
-                    b.HasIndex("BeerStyle");
-
                     b.HasIndex("BreweryId");
 
                     b.ToTable("Beers");
-
-                    b.HasData(
-                        new { BeerId = 1, Abv = 7.2, BeerName = "Hexagenia", BeerStyle = "Ipa", BreweryId = 1, Ibu = 80 },
-                        new { BeerId = 2, Abv = 9.2, BeerName = "Widowmaker", BeerStyle = "DoubleIpa", BreweryId = 1, Ibu = 120 },
-                        new { BeerId = 3, Abv = 5.5, BeerName = "Sierra Nevada Pale Ale", BeerStyle = "PaleAle", BreweryId = 2, Ibu = 75 }
-                    );
                 });
 
             modelBuilder.Entity("Brewdogger.Api.Entities.Brewery", b =>
@@ -62,12 +54,9 @@ namespace Brewdogger.Api.Persistence.Migrations
 
                     b.HasKey("BreweryId");
 
-                    b.ToTable("Breweries");
+                    b.HasIndex("State");
 
-                    b.HasData(
-                        new { BreweryId = 1, BreweryName = "Fall River Brewery", City = "Redding", State = "CA" },
-                        new { BreweryId = 2, BreweryName = "Sierra Nevada Brewing Company", City = "Chico", State = "CA" }
-                    );
+                    b.ToTable("Breweries");
                 });
 
             modelBuilder.Entity("Brewdogger.Api.Entities.Beer", b =>

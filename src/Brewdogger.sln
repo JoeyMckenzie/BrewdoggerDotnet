@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Brewdogger.Api", "Brewdogge
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Brewdogger.Tests", "Brewdogger.Tests\Brewdogger.Tests.csproj", "{90AD64A5-55A7-4481-B846-C94231E6F740}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Brewdogger.Auth", "Brewdogger.Auth\Brewdogger.Auth.csproj", "{FF86D554-1AE7-4307-A41D-3365A180373F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,5 +46,17 @@ Global
 		{90AD64A5-55A7-4481-B846-C94231E6F740}.Release|x64.Build.0 = Release|Any CPU
 		{90AD64A5-55A7-4481-B846-C94231E6F740}.Release|x86.ActiveCfg = Release|Any CPU
 		{90AD64A5-55A7-4481-B846-C94231E6F740}.Release|x86.Build.0 = Release|Any CPU
+		{FF86D554-1AE7-4307-A41D-3365A180373F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF86D554-1AE7-4307-A41D-3365A180373F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF86D554-1AE7-4307-A41D-3365A180373F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{FF86D554-1AE7-4307-A41D-3365A180373F}.Debug|x64.Build.0 = Debug|Any CPU
+		{FF86D554-1AE7-4307-A41D-3365A180373F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FF86D554-1AE7-4307-A41D-3365A180373F}.Debug|x86.Build.0 = Debug|Any CPU
+		{FF86D554-1AE7-4307-A41D-3365A180373F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF86D554-1AE7-4307-A41D-3365A180373F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF86D554-1AE7-4307-A41D-3365A180373F}.Release|x64.ActiveCfg = Release|Any CPU
+		{FF86D554-1AE7-4307-A41D-3365A180373F}.Release|x64.Build.0 = Release|Any CPU
+		{FF86D554-1AE7-4307-A41D-3365A180373F}.Release|x86.ActiveCfg = Release|Any CPU
+		{FF86D554-1AE7-4307-A41D-3365A180373F}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
