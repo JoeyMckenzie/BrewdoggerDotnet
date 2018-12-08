@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Serilog;
 using Serilog.Events;
 
-namespace Brewdogger.Api
+namespace Brewdogger.Auth
 {
     public class Program
     {
@@ -14,7 +14,7 @@ namespace Brewdogger.Api
                 .MinimumLevel.Debug()
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
                 .Enrich.FromLogContext()
-                .WriteTo.File("Logs/Brewdogger-.log", rollingInterval: RollingInterval.Month)
+                .WriteTo.File("Logs/Auth-.log", rollingInterval: RollingInterval.Month)
                 .CreateLogger();
             
             try

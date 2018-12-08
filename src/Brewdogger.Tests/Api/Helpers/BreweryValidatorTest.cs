@@ -5,7 +5,7 @@ using FluentValidation.Results;
 using FluentValidation.TestHelper;
 using NUnit.Framework;
 
-namespace Brewdogger.Tests.Helpers
+namespace Brewdogger.Tests.Api.Helpers
 {
     [TestFixture]
     public class BreweryValidatorTest

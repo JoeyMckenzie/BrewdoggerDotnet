@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using AutoMapper;
 using Brewdogger.Api.Entities;
 using Brewdogger.Api.Helpers;
@@ -10,7 +9,7 @@ using Brewdogger.Api.Services;
 using Moq;
 using NUnit.Framework;
 
-namespace Brewdogger.Tests.Services
+namespace Brewdogger.Tests.Api.Services
 {
     [TestFixture]
     public class BreweryServiceTest
